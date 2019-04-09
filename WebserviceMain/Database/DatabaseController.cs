@@ -20,23 +20,14 @@ namespace WebserviceMain.Database
 			return _databaseHandler.GetCategories();
 		}
 
-		[HttpPost("Update")]
 		public bool Update([FromBody] string test)
 		{
 			return false;
 		}
 
-		[Route("newCategory")]
-		[HttpGet]
 		public void InsertCategory()
 		{
 			_databaseHandler.InsertCategory();
-		}
-
-		[HttpPost]
-		public ActionResult<IEnumerable<string>> Delete()
-		{
-			return new string[] { "value1", "value2" };
 		}
 	}
 }

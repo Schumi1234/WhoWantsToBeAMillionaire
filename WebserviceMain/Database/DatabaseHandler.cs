@@ -77,7 +77,7 @@ namespace WebserviceMain.Database
 		public void InsertCategory()
 		{
 			//Update good for insert and update. Inserts if no id is deliverd.
-			//ToDo: Test tables with foreign key
+			//ToDo: Test tables with foreign key, Test delete
 			var category = new Category
 			{
 				strName = "Experiments"
