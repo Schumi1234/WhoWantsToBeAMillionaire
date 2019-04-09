@@ -74,7 +74,7 @@ namespace WebserviceMain.Database
 
 		}
 
-		public void InsertCategory()
+		public void InsertUpdateCategory()
 		{
 			//Update good for insert and update. Inserts if no id is deliverd.
 			//ToDo: Test tables with foreign key, Test delete
@@ -82,6 +82,7 @@ namespace WebserviceMain.Database
 			{
 				strName = "Experiments"
 			};
+
 			_dataContext.Category.Update(category);
 			_dataContext.SaveChanges();
 		}

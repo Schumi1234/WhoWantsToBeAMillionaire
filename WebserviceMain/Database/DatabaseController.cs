@@ -25,9 +25,9 @@ namespace WebserviceMain.Database
 			return false;
 		}
 
-		public void InsertCategory()
+		public void InsertUpdateCategory()
 		{
-			_databaseHandler.InsertCategory();
+			_databaseHandler.InsertUpdateCategory();
 		}
 	}
 }
