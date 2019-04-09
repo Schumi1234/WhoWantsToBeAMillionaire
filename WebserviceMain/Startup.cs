@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using WebserviceMain.Database;
+using WebserviceMain.Database.Helper;
 
 namespace WebserviceMain
 {
@@ -26,6 +22,11 @@ namespace WebserviceMain
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+			services.AddTransient<DatabaseHandler>();
+			services.AddTransient<DatabaseController>();
+			var connection = @"Data Source=LAPTOP-IFSOBP1P;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;initial catalog=LB151WhoWantsToBeAMillionaire";
+			services
+				.AddDbContext<DataContext>(options => options.UseSqlServer(connection));
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
