@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using WebserviceMain.Database.Tables;
+using SharedModels;
 
 namespace WebserviceMain.WhoWantsToBeAMillionaire
 {
@@ -8,7 +8,7 @@ namespace WebserviceMain.WhoWantsToBeAMillionaire
 	[ApiController]
 	public class WhoWantsToBeAMillionaireController : Controller
 	{
-		private WhoWantsToBeAMillionaireHandler _gameHandler;
+		private readonly WhoWantsToBeAMillionaireHandler _gameHandler;
 
 		public WhoWantsToBeAMillionaireController(WhoWantsToBeAMillionaireHandler gameHandler)
 		{
@@ -17,9 +17,37 @@ namespace WebserviceMain.WhoWantsToBeAMillionaire
 
 		[Route("Categories")]
 		[HttpGet]
-		public IEnumerable<Category> GetCategories()
+		public IEnumerable<CategoryModel> GetCategories()
 		{
 			return _gameHandler.GetCategories();
+		}
+
+		[Route("Question")]
+		[HttpPost]
+		public QuestionModel GetRandomQuestion(int categoryId)
+		{
+			return _gameHandler.GetRandomQuestion(categoryId);
+		}
+
+		[Route("Ranking")]
+		[HttpGet]
+		public IEnumerable<RankingModel> GetRanking()
+		{
+			return _gameHandler.GetRanking();
+		}
+
+		[Route("Answers")]
+		[HttpPost]
+		public IEnumerable<AnswerModel> GetAnswers(int questionId)
+		{
+			return _gameHandler.GetAnswers(questionId);
+		}
+
+		[Route("ValidateAnswer")]
+		[HttpPost]
+		public bool CheckAnswer(int answerId)
+		{
+			return _gameHandler.CheckAnswer(answerId);
 		}
 	}
 }

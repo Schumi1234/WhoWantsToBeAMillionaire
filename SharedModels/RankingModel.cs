@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using WebserviceMain.Database.Tables;
 
-namespace WebserviceMain.Database.InternalModels
+namespace SharedModels
 {
-	public class Ranking
+	public class RankingModel
 	{
 		public double EvaluationPoints { get; set; }
 		public string PlayerName { get; set; }
@@ -14,7 +11,7 @@ namespace WebserviceMain.Database.InternalModels
 		public DateTime GameEnd { get; set; }
 
 		public string TimeOfGame { get; set; } 
-		public IEnumerable<Category> PlayedCategories { get; set; }
+		public IEnumerable<CategoryModel> PlayedCategories { get; set; }
 		public int Score { get; set; }
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using SharedModels;
 using WebserviceMain.Database.Tables;
 
 namespace WebserviceMain.Database
@@ -16,6 +17,11 @@ namespace WebserviceMain.Database
 			_databaseHandler = databaseHandler;
 		}
 
+		public Question GetRandomQuestion(int categoryId)
+		{
+			return _databaseHandler.GetRandomQuestion(categoryId);
+		}
+
 		public IEnumerable<Category> GetCategories()
 		{
 			return _databaseHandler.GetCategories();
@@ -29,6 +35,21 @@ namespace WebserviceMain.Database
 		public void InsertUpdate<T>(IEnumerable<T> tables)
 		{
 			_databaseHandler.InsertUpdate(tables);
+		}
+
+		public IEnumerable<RankingModel> GetRanking()
+		{
+			return _databaseHandler.GetRanking();
+		}
+
+		public IEnumerable<Answer> GetAnswers(int questionId)
+		{
+			return _databaseHandler.GetAnswers(questionId);
+		}
+
+		public Answer GetAnswer(int answerId)
+		{
+			return _databaseHandler.GetAnswer(answerId);
 		}
 	}
 }

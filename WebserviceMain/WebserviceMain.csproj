@@ -36,4 +36,6 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
   </ItemGroup>
 
+  <Import Project="..\SharedModels\SharedModels.projitems" Label="Shared" />
+
 </Project>

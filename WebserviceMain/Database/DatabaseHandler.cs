@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SharedModels;
 using WebserviceMain.Database.Helper;
-using WebserviceMain.Database.InternalModels;
 using WebserviceMain.Database.Tables;
 using WebserviceMain.Extensions;
 
@@ -19,30 +19,43 @@ namespace WebserviceMain.Database
 
 		public Question GetRandomQuestion(int categoryId)
 		{
-			var questions = _dataContext.Question.Where(a => a.intCategoryId == categoryId).ToList();
+			var questions = _dataContext.Question
+				.Where(a => a.intCategoryId == categoryId)
+				.ToList();
 			questions.Shuffle();
 			return questions.FirstOrDefault();
 		}
 
 		public IEnumerable<Answer> GetAnswers(int questionId)
 		{
-			return _dataContext.Answer.Where(a => a.intQuestionID == questionId).ToList();
+			return _dataContext.Answer
+				.Where(a => a.intQuestionID == questionId)
+				.ToList();
 		}
 
 		public IEnumerable<Category> GetCategories()
 		{
-			var categoriesWithQuestions = _dataContext.Question.Select(a => a.intCategoryId).Distinct();
+			var categoriesWithQuestions = _dataContext.Question
+				.Select(a => a.intCategoryId)
+				.Distinct();
 			// return categories with existing questions
-			return _dataContext.Category.ToList().Where(a => categoriesWithQuestions.Any(b => b == a.intCategoryId));
+			return _dataContext.Category
+				.Where(a => categoriesWithQuestions
+					.Any(b => b == a.intCategoryId))
+				.ToList();
 		}
 
-		public IEnumerable<Ranking> GetRanking()
+		public IEnumerable<RankingModel> GetRanking()
 		{
 			var games = _dataContext.Game.ToList();
 			var categories = _dataContext.Category.ToList();
 			var games2Categories = _dataContext.Game2Category.ToList();
+			var playedCategories = categories
+				.Where(a => games2Categories
+					.Any(b => b.intCategoryID == a.intCategoryId && games
+								  .Any(x => x.intGameID == b.intGameID)));
 			return games
-				.Select(x => new Ranking
+				.Select(x => new RankingModel
 				{
 					GameBegin = x.datBegin,
 					GameEnd = x.datEnd,
@@ -50,9 +63,12 @@ namespace WebserviceMain.Database
 					EvaluationPoints = x.intScore / (x.datEnd - x.datBegin).TotalSeconds,
 					TimeOfGame = GetTimeDifference(x.datBegin, x.datEnd),
 					Score = x.intScore,
-					PlayedCategories = categories
-					.Where(a => games2Categories
-						.Any(b => b.intCategoryID == a.intCategoryId && x.intGameID == b.intGameID))
+					PlayedCategories = playedCategories
+						.Select(b => new CategoryModel
+						{
+							Category = b.strName,
+							CategoryId = b.intCategoryId
+						})
 
 				})
 				.OrderBy(a => a.EvaluationPoints);
@@ -122,6 +138,11 @@ namespace WebserviceMain.Database
 				default:
 					throw new ArgumentException("Table unknown");
 			}
+		}
+
+		public Answer GetAnswer(int answerId)
+		{
+			return _dataContext.Answer.Single(a => a.intAnswerID == answerId);
 		}
 	}
 }

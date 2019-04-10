@@ -9,6 +9,9 @@
     <Import_RootNamespace>SharedModels</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)AnswerModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CategoryModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)QuestionModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RankingModel.cs" />
   </ItemGroup>
 </Project>
