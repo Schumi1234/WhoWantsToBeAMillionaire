@@ -16,7 +16,7 @@ namespace WebserviceMain.Database
 			_databaseHandler = databaseHandler;
 		}
 
-		public IEnumerable<Category> GetCategory()
+		public IEnumerable<Category> GetCategories()
 		{
 			return _databaseHandler.GetCategories();
 		}
