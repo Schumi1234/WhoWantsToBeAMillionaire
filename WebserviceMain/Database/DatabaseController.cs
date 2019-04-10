@@ -4,6 +4,7 @@ using WebserviceMain.Database.Tables;
 
 namespace WebserviceMain.Database
 {
+	// Url https://localhost:44339/Database
 	[Route("[controller]")]
 	[ApiController]
 	public class DatabaseController : ControllerBase
@@ -20,14 +21,14 @@ namespace WebserviceMain.Database
 			return _databaseHandler.GetCategories();
 		}
 
-		public bool Update([FromBody] string test)
+		public void Delete<T>(IEnumerable<T> tables)
 		{
-			return false;
+			_databaseHandler.DeleteEntries(tables);
 		}
 
-		public void InsertUpdateCategory()
+		public void InsertUpdate<T>(IEnumerable<T> tables)
 		{
-			_databaseHandler.InsertUpdateCategory();
+			_databaseHandler.InsertUpdate(tables);
 		}
 	}
 }

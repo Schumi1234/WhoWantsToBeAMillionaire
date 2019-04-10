@@ -74,17 +74,54 @@ namespace WebserviceMain.Database
 
 		}
 
-		public void InsertUpdateCategory()
+		public void DeleteEntries<T>(IEnumerable<T> tables)
 		{
-			//Update good for insert and update. Inserts if no id is deliverd.
-			//ToDo: Test tables with foreign key, Test delete
-			var category = new Category
+			//ToDo:Test delete
+			switch (tables)
 			{
-				strName = "Experiments"
-			};
+				case IEnumerable<Category> categories:
+					_dataContext.Category.RemoveRange(categories);
+					break;
+				case IEnumerable<Game> games:
+					_dataContext.Game.RemoveRange(games);
+					break;
+				case IEnumerable<Question> questions:
+					_dataContext.Question.RemoveRange(questions);
+					break;
+				case IEnumerable<Answer> answers:
+					_dataContext.Answer.RemoveRange(answers);
+					break;
+				case IEnumerable<Game2Category> game2Categories:
+					_dataContext.Game2Category.RemoveRange(game2Categories);
+					break;
+				default:
+					throw new ArgumentException("Table unknown");
+			}
+		}
 
-			_dataContext.Category.Update(category);
-			_dataContext.SaveChanges();
+		public void InsertUpdate<T>(IEnumerable<T> tables)
+		{
+			switch (tables)
+			{
+				//ToDo: Test tables with foreign key
+				case IEnumerable<Category> categories:
+					_dataContext.Category.UpdateRange(categories);
+					break;
+				case IEnumerable<Game> games:
+					_dataContext.Game.UpdateRange(games);
+					break;
+				case IEnumerable<Question> questions:
+					_dataContext.Question.UpdateRange(questions);
+					break;
+				case IEnumerable<Answer> answers:
+					_dataContext.Answer.UpdateRange(answers);
+					break;
+				case IEnumerable<Game2Category> game2Categories:
+					_dataContext.Game2Category.UpdateRange(game2Categories);
+					break;
+				default:
+					throw new ArgumentException("Table unknown");
+			}
 		}
 	}
 }
