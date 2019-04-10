@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SharedModels
 {
-	class QuestionModel
+	public class QuestionModel
 	{
 		public int CategoryId { get; set; }
 
