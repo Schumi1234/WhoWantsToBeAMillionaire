@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WebserviceMain.Database;
 using WebserviceMain.Database.Helper;
+using WebserviceMain.WhoWantsToBeAMillionaire;
 
 namespace WebserviceMain
 {
@@ -24,7 +25,10 @@ namespace WebserviceMain
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 			services.AddTransient<DatabaseHandler>();
 			services.AddTransient<DatabaseController>();
-			var connection = @"Data Source=LAPTOP-IFSOBP1P;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;initial catalog=LB151WhoWantsToBeAMillionaire";
+			services.AddTransient<WhoWantsToBeAMillionaireHandler>();
+			// for localhost of db
+			var host = System.Environment.MachineName;
+			var connection = $"Data Source={host};Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;initial catalog=LB151WhoWantsToBeAMillionaire";
 			services
 				.AddDbContext<DataContext>(options => options.UseSqlServer(connection));
 		}

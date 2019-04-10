@@ -13,10 +13,10 @@ namespace WebserviceMain.Database.Tables
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		[Display(Name = "Game Id")]
 		public int intGameID { get; set; }
+
 		[Required]
 		[Column(TypeName = "nvarchar(max)")]
 		[Display(Name = "Player")]
-
 		public string strPlayerName { get; set; }
 
 		[Required]
