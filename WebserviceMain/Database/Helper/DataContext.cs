@@ -7,8 +7,8 @@ namespace WebserviceMain.Database.Helper
 	{
 		public DataContext(DbContextOptions options) : base(options)
 		{
-
 		}
+
 		public DbSet<Category> Category { get; set; }
 		public DbSet<Question> Question { get; set; }
 		public DbSet<Answer> Answer { get; set; }
