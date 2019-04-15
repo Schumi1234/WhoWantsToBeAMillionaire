@@ -3,11 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebserviceMain", "WebserviceMain\WebserviceMain.csproj", "{B1769D66-793B-46D5-BCEF-15EF0CA4D3F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebserviceMain", "WebserviceMain\WebserviceMain.csproj", "{B1769D66-793B-46D5-BCEF-15EF0CA4D3F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebMain", "WebMain\WebMain.csproj", "{5728DF5A-E93D-4A08-BBBF-DE8B2F916139}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebMain", "WebMain\WebMain.csproj", "{5728DF5A-E93D-4A08-BBBF-DE8B2F916139}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SharedModels", "SharedModels\SharedModels.shproj", "{494B9410-F7C1-4769-9506-AA7953A020E1}"
 EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		SharedModels\SharedModels.projitems*{494b9410-f7c1-4769-9506-aa7953a020e1}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
