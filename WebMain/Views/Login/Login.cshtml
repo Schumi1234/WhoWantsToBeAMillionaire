@@ -1,0 +1,23 @@
+﻿@model WebMain.Models.Login.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h2>Login</h2>
+<div class="smart-search">
+    @using (Html.BeginForm("DoLogin", "Login", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+    <div class="form-group">
+        <div class="hidden-xs col-sm-1 col-md-1 col-lg-1 text-right">
+            @Html.LabelFor(m => m.UserName, "Benutzername", new { @class = "control-label" })
+        </div>
+        <div class="col-xs-8 col-sm-8 col-md-9 col-lg-10">
+            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+            <br />
+            <input type="submit" value="Anmelden" />
+            <input type="submit" value="Zurück"  asp-action="Return"/>
+        </div>
+    </div>
+    }
+</div>

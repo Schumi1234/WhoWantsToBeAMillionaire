@@ -24,9 +24,9 @@ namespace WebserviceMain.WhoWantsToBeAMillionaire
 
 		[Route("Question")]
 		[HttpPost]
-		public QuestionModel GetRandomQuestion(int categoryId)
+		public QuestionModel GetRandomQuestion(int categoryId, IEnumerable<int> playedQuestions)
 		{
-			return _gameHandler.GetRandomQuestion(categoryId);
+			return _gameHandler.GetRandomQuestion(categoryId, playedQuestions);
 		}
 
 		[Route("Ranking")]

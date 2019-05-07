@@ -1,28 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Rewrite.Internal.ApacheModRewrite;
 using Newtonsoft.Json;
 using SharedModels;
+using WebMain.DataServiceProvider;
+using WebMain.Models;
+using WebMain.Models.Game;
 
 namespace WebMain.Game
 {
 	public class GameController : Controller
 	{
-		public IActionResult GetCategories()
-		{
-			var client = new HttpClient();
-			var response = client.GetAsync(new Uri(@"https://localhost:44339/WhoWantsToBeAMillionaire/Categories")).Result;
-			if (response.IsSuccessStatusCode)
-			{
-				var responseString = response.Content.ReadAsStringAsync().Result;
-				var test = JsonConvert.DeserializeObject<IEnumerable<CategoryModel>>(responseString);
-				return View();
-			}
+		private readonly WebserviceProvider _webserviceProvider;
 
+		public GameController(WebserviceProvider webserviceProvider)
+		{
+			_webserviceProvider = webserviceProvider;
+		}
+		public IActionResult DetailCategories()
+		{
+			var categories = GetCategories();
+			var gameViewModel = new GameCategoriesViewModel()
+			{
+				Categories = categories
+			};
+
+			return View();
+		}
+
+		public IActionResult Home()
+		{
+			return View();
+		}
+
+		private IEnumerable<CategoryModel> GetCategories()
+		{
+			return _webserviceProvider.GetDataFromWebService<IEnumerable<CategoryModel>>(@"https://localhost:44339/WhoWantsToBeAMillionaire/Categories");
 		}
 	}
 }

@@ -17,10 +17,10 @@ namespace WebserviceMain.Database
 			_dataContext = dataContext;
 		}
 
-		public Question GetRandomQuestion(int categoryId)
+		public Question GetRandomQuestion(int categoryId, IEnumerable<int> playedQuestions)
 		{
 			var questions = _dataContext.Question
-				.Where(a => a.intCategoryId == categoryId)
+				.Where(a => a.intCategoryId == categoryId && playedQuestions.All(b => b != a.intQuestionId))
 				.ToList();
 			questions.Shuffle();
 			return questions.FirstOrDefault();

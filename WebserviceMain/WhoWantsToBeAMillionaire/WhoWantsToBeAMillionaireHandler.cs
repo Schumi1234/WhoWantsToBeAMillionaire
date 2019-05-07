@@ -25,14 +25,16 @@ namespace WebserviceMain.WhoWantsToBeAMillionaire
 				});
 		}
 
-		public QuestionModel GetRandomQuestion(int categoryId)
+		public QuestionModel GetRandomQuestion(int categoryId, IEnumerable<int> playedQuestions)
 		{
-			var question = _databaseController.GetRandomQuestion(categoryId);
+			var question = _databaseController.GetRandomQuestion(categoryId, playedQuestions);
 
 			return new QuestionModel
 			{
 				Question = question.strName,
-				QuestionId = question.intQuestionId
+				QuestionId = question.intQuestionId,
+				AnsweredCorrectlyPercentage = question.intAnsweredCorrectly / question.intAnsweredWrong * 100,
+				NumberAnsweredCorrectly = question.intAnsweredCorrectly
 			};
 		}
 

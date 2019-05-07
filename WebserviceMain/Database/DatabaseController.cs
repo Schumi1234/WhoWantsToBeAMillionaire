@@ -17,9 +17,9 @@ namespace WebserviceMain.Database
 			_databaseHandler = databaseHandler;
 		}
 
-		public Question GetRandomQuestion(int categoryId)
+		public Question GetRandomQuestion(int categoryId, IEnumerable<int> playedQuestions)
 		{
-			return _databaseHandler.GetRandomQuestion(categoryId);
+			return _databaseHandler.GetRandomQuestion(categoryId, playedQuestions);
 		}
 
 		public IEnumerable<Category> GetCategories()
