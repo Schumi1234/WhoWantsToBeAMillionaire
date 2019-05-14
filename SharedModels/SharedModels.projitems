@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)AnswerModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CategoryModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoginRequestModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)QuestionModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RankingModel.cs" />
   </ItemGroup>

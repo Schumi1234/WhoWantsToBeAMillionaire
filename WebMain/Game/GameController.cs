@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using SharedModels;
 using WebMain.DataServiceProvider;
-using WebMain.Models;
 using WebMain.Models.Game;
 
 namespace WebMain.Game

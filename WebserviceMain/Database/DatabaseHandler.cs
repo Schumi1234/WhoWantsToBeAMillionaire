@@ -110,9 +110,14 @@ namespace WebserviceMain.Database
 				case IEnumerable<Game2Category> game2Categories:
 					_dataContext.Game2Category.RemoveRange(game2Categories);
 					break;
+				case IEnumerable<User> users:
+					_dataContext.User.RemoveRange(users);
+					break;
 				default:
 					throw new ArgumentException("Table unknown");
 			}
+
+			_dataContext.SaveChanges();
 		}
 
 		public void InsertUpdate<T>(IEnumerable<T> tables)
@@ -135,14 +140,36 @@ namespace WebserviceMain.Database
 				case IEnumerable<Game2Category> game2Categories:
 					_dataContext.Game2Category.UpdateRange(game2Categories);
 					break;
+				case IEnumerable<User> users:
+					_dataContext.User.UpdateRange(users);
+					break;
 				default:
 					throw new ArgumentException("Table unknown");
 			}
+
+			_dataContext.SaveChanges();
 		}
 
 		public Answer GetAnswer(int answerId)
 		{
 			return _dataContext.Answer.Single(a => a.intAnswerID == answerId);
+		}
+
+		public bool AddUser(string username, string password)
+		{
+			
+			// toDO: Hash password
+			var user = new User
+			{
+				strPassword = password,
+				strUsername = username
+			};
+			var test = new List<User>
+			{
+				user
+			};
+			InsertUpdate(test);
+			return false;
 		}
 	}
 }

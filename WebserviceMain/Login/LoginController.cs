@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WebserviceMain.Login.InternalModel;
+using SharedModels;
 
 namespace WebserviceMain.Login
 {
@@ -7,15 +7,16 @@ namespace WebserviceMain.Login
 	[ApiController]
 	public class LoginController : ControllerBase
 	{
-		private LoginHandler _loginHandler;
+		private readonly LoginHandler _loginHandler;
 
 		public LoginController(LoginHandler loginHandler)
 		{
 			_loginHandler = loginHandler;
 		}
 
+		[Route("DoLogin")]
 		[HttpPost]
-		public LoginResponseModel DoLogin(LoginRequestModel model)
+		public bool DoLogin([FromBody] LoginRequestModel model)
 		{
 			return _loginHandler.DoLogin(model);
 		}

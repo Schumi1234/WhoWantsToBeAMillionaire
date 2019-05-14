@@ -14,5 +14,6 @@ namespace WebserviceMain.Database.Helper
 		public DbSet<Answer> Answer { get; set; }
 		public DbSet<Game> Game { get; set; }
 		public DbSet<Game2Category> Game2Category { get; set; }
+		public DbSet<User> User { get; set; }
 	}
 }

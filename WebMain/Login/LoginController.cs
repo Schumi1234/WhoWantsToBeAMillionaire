@@ -1,6 +1,9 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using SharedModels;
 using WebMain.DataServiceProvider;
+using WebMain.Models.Login;
 
 namespace WebMain.Login
 {
@@ -15,12 +18,26 @@ namespace WebMain.Login
 
 		public IActionResult Login()
 		{
-			return View();
+			return View(new LoginViewModel());
 		}
 		[HttpPost]
-		public void DoLogin()
+		public IActionResult Login(string username, string password)
 		{
-			throw new NotImplementedException();
+			var success = DoLogin(username, password);
+			return RedirectToAction("Home", "Game");
+		}
+
+		private bool DoLogin(string username, string password)
+		{
+			var requestModel = new LoginRequestModel
+			{
+				Password = "TestPassword",
+				Username = username
+			};
+
+			var content = JsonConvert.SerializeObject(requestModel);
+			var success = _webserviceProvider.PostDataFromWebService<bool>(@"https://localhost:44339/Login/DoLogin", content);
+			return false;
 		}
 
 		public IActionResult Return()

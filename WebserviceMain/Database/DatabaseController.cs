@@ -51,5 +51,10 @@ namespace WebserviceMain.Database
 		{
 			return _databaseHandler.GetAnswer(answerId);
 		}
+
+		public bool AddUser(string username, string password)
+		{
+			return _databaseHandler.AddUser(username, password);
+		}
 	}
 }

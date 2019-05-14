@@ -1,15 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using WebserviceMain.Login.InternalModel;
+using SharedModels;
+using WebserviceMain.Database;
 
 namespace WebserviceMain.Login
 {
 	public class LoginHandler
 	{
-		public LoginResponseModel DoLogin(LoginRequestModel model)
+		private readonly DatabaseController _databaseController;
+
+		public LoginHandler(DatabaseController databaseController)
 		{
+			_databaseController = databaseController;
+		}
+
+		public bool DoLogin(LoginRequestModel model)
+		{
+			_databaseController.AddUser(model.Username, model.Password);
 			throw new NotImplementedException();
 		}
 
