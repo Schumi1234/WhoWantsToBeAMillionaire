@@ -17,6 +17,11 @@ namespace WebserviceMain.Database
 			_dataContext = dataContext;
 		}
 
+		public IEnumerable<Question> GetAllQuestions()
+		{
+			return _dataContext.Question.ToList();
+		}
+
 		public IEnumerable<Question> GetQuestionsByCategories(IEnumerable<int> categoryIds)
 		{
 			var questions = _dataContext.Question
@@ -35,14 +40,7 @@ namespace WebserviceMain.Database
 
 		public IEnumerable<Category> GetCategories()
 		{
-			var categoriesWithQuestions = _dataContext.Question
-				.Select(a => a.intCategoryId)
-				.Distinct();
-			// return categories with existing questions
-			return _dataContext.Category
-				.Where(a => categoriesWithQuestions
-					.Any(b => b == a.intCategoryId))
-				.ToList();
+			return _dataContext.Category.ToList();
 		}
 
 		public IEnumerable<RankingModel> GetRanking()
@@ -90,64 +88,91 @@ namespace WebserviceMain.Database
 
 		}
 
-		public void DeleteEntries<T>(IEnumerable<T> tables)
+		public bool DeleteEntries<T>(IEnumerable<T> tables)
 		{
-			//ToDo:Test delete
-			switch (tables)
+			using (var transaction = _dataContext.Database.BeginTransaction())
 			{
-				case IEnumerable<Category> categories:
-					_dataContext.Category.RemoveRange(categories);
-					break;
-				case IEnumerable<Game> games:
-					_dataContext.Game.RemoveRange(games);
-					break;
-				case IEnumerable<Question> questions:
-					_dataContext.Question.RemoveRange(questions);
-					break;
-				case IEnumerable<Answer> answers:
-					_dataContext.Answer.RemoveRange(answers);
-					break;
-				case IEnumerable<Game2Category> game2Categories:
-					_dataContext.Game2Category.RemoveRange(game2Categories);
-					break;
-				case IEnumerable<User> users:
-					_dataContext.User.RemoveRange(users);
-					break;
-				default:
-					throw new ArgumentException("Table unknown");
+				try
+				{
+					//ToDo:Test delete
+					switch (tables)
+					{
+						case IEnumerable<Category> categories:
+							_dataContext.Category.RemoveRange(categories);
+							break;
+						case IEnumerable<Game> games:
+							_dataContext.Game.RemoveRange(games);
+							break;
+						case IEnumerable<Question> questions:
+							_dataContext.Question.RemoveRange(questions);
+							break;
+						case IEnumerable<Answer> answers:
+							_dataContext.Answer.RemoveRange(answers);
+							break;
+						case IEnumerable<Game2Category> game2Categories:
+							_dataContext.Game2Category.RemoveRange(game2Categories);
+							break;
+						case IEnumerable<User> users:
+							_dataContext.User.RemoveRange(users);
+							break;
+						default:
+							throw new ArgumentException("Table unknown");
+					}
+					_dataContext.SaveChanges();
+					transaction.Commit();
+				}
+				catch (Exception e)
+				{
+					transaction.Rollback();
+					return false;
+				}
 			}
 
-			_dataContext.SaveChanges();
+			return true;
 		}
-
-		public void InsertUpdate<T>(IEnumerable<T> tables)
+		
+		public bool InsertUpdate<T>(IEnumerable<T> tables)
 		{
-			switch (tables)
+			using (var transaction = _dataContext.Database.BeginTransaction())
 			{
-				//ToDo: Test tables with foreign key
-				case IEnumerable<Category> categories:
-					_dataContext.Category.UpdateRange(categories);
-					break;
-				case IEnumerable<Game> games:
-					_dataContext.Game.UpdateRange(games);
-					break;
-				case IEnumerable<Question> questions:
-					_dataContext.Question.UpdateRange(questions);
-					break;
-				case IEnumerable<Answer> answers:
-					_dataContext.Answer.UpdateRange(answers);
-					break;
-				case IEnumerable<Game2Category> game2Categories:
-					_dataContext.Game2Category.UpdateRange(game2Categories);
-					break;
-				case IEnumerable<User> users:
-					_dataContext.User.UpdateRange(users);
-					break;
-				default:
-					throw new ArgumentException("Table unknown");
+				try
+				{
+					switch (tables)
+					{
+						//ToDo: Test tables with foreign key
+						case IEnumerable<Category> categories:
+							_dataContext.Category.UpdateRange(categories);
+							break;
+						case IEnumerable<Game> games:
+							_dataContext.Game.UpdateRange(games);
+							break;
+						case IEnumerable<Question> questions:
+							_dataContext.Question.UpdateRange(questions);
+							break;
+						case IEnumerable<Answer> answers:
+							_dataContext.Answer.UpdateRange(answers);
+							break;
+						case IEnumerable<Game2Category> game2Categories:
+							_dataContext.Game2Category.UpdateRange(game2Categories);
+							break;
+						case IEnumerable<User> users:
+							_dataContext.User.UpdateRange(users);
+							break;
+						default:
+							throw new ArgumentException("Table unknown");
+					}
+
+					_dataContext.SaveChanges();
+					transaction.Commit();
+				}
+				catch (Exception e)
+				{
+					transaction.Rollback();
+					return false;
+				}
 			}
 
-			_dataContext.SaveChanges();
+			return true;
 		}
 
 		public Answer GetAnswer(int answerId)

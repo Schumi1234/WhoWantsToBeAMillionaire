@@ -11,9 +11,11 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)AnswerModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CategoryModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EditCategoryModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LoginRequestModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)QuestionModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RankingModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SaveCategoriesRequestModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SaveGameRequestModel.cs" />
   </ItemGroup>
 </Project>

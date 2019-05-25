@@ -1,0 +1,43 @@
+﻿@model WebMain.Models.Edit.EditCategoriesViewModel
+@{
+    ViewData["Title"] = "Kategorien bearbeiten";
+}
+
+<h2>Kategorien bearbeiten</h2>
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="input-validation-error">
+        <p style="color: red; font-size: x-large">@Model.ErrorMessage</p>
+    </div>
+}
+@using (Html.BeginForm("EditCategories", "Edit", FormMethod.Post, new { @class = "form-horizontal", role = "form", viewModel = Model }))
+{
+
+    <div class="container-fluid">
+        <table class="table-responsive">
+            <tr>
+                <th>Bezeichnung</th>
+                <th>Löschen</th>
+            </tr>
+            @for (var i = 0; i < Model.Categories.Count(); i++)
+            {
+                <tr>
+                    <td>@Html.TextBoxFor(m => m.Categories[i].Name, new { @class = "form-control" })</td>
+                    <td>@Html.CheckBoxFor(m => m.Categories[i].Delete, new { @class = "form-control" })</td>
+                </tr>
+            }
+        </table>
+    </div>
+
+    <input class="btn-primary" type="submit" value="Neue Kategorie hinzufügen" asp-action="AddCategory" method="post" />
+    <input class="btn-primary" type="submit" value="Speichern" />
+
+    <!--Save values in models, otherwise data will be lost-->
+    for (var i = 0; i < Model.Categories.Count; i++)
+    {
+        @Html.HiddenFor(m => m.Categories[i].Id)
+        @Html.HiddenFor(m => m.Categories[i].Name)
+        @Html.HiddenFor(m => m.Categories[i].Delete)
+    }
+}
+

@@ -1,7 +1,4 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-
-namespace WebMain.Models.Game
+﻿namespace WebMain.Models.Game
 {
 	public class CategoryViewModel : BaseViewModel
 	{

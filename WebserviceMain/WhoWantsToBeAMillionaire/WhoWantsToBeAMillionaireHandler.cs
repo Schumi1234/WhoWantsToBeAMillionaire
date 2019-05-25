@@ -18,8 +18,16 @@ namespace WebserviceMain.WhoWantsToBeAMillionaire
 
 		public IEnumerable<CategoryModel> GetCategories()
 		{
-			return _databaseController
-				.GetCategories()
+			var categoriesWithQuestions = _databaseController
+				.GetAllQuestions()
+				.Select(a => a.intCategoryId);
+			var categories = _databaseController.GetCategories();
+
+			var playableCategories = categories
+				.Where(a => categoriesWithQuestions
+					.Any(b => b == a.intCategoryId));
+
+			return playableCategories
 				.Select(a => new CategoryModel
 				{
 					Category = a.strName,
@@ -27,10 +35,10 @@ namespace WebserviceMain.WhoWantsToBeAMillionaire
 				});
 		}
 
-		public IEnumerable<QuestionModel> GetQuestions(IEnumerable<int>categoryIds)
+		public IEnumerable<QuestionModel> GetQuestions(IEnumerable<int> categoryIds)
 		{
 			var questions = _databaseController.GetQuestionsByCategories(categoryIds);
-			
+
 			return questions.Select(question =>
 			{
 				var answeredCorrectlyPercentage = question.intAnsweredWrong + question.intAnsweredCorrectly > 0 ? question.intAnsweredCorrectly / (question.intAnsweredWrong + question.intAnsweredCorrectly + 0.0) * 100.0 : 0.0;

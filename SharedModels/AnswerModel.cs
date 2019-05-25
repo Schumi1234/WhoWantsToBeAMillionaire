@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SharedModels
+﻿namespace SharedModels
 {
 	public class AnswerModel
 	{

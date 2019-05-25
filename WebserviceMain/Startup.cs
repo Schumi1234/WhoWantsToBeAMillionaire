@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WebserviceMain.Database;
 using WebserviceMain.Database.Helper;
+using WebserviceMain.Edit;
 using WebserviceMain.WhoWantsToBeAMillionaire;
 using WebserviceMain.Joker;
 using WebserviceMain.Login;
@@ -29,6 +30,7 @@ namespace WebserviceMain
 			services.AddTransient<DatabaseController>();
 			services.AddTransient<WhoWantsToBeAMillionaireHandler>();
 			services.AddTransient<JokerHandler>();
+			services.AddTransient<EditHandler>();
 			// for localhost of db
 			var host = System.Environment.MachineName;
 			var connection = $"Data Source={host};Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;initial catalog=LB151WhoWantsToBeAMillionaire";

@@ -27,14 +27,14 @@ namespace WebserviceMain.Database
 			return _databaseHandler.GetCategories();
 		}
 
-		public void Delete<T>(IEnumerable<T> tables)
+		public bool Delete<T>(IEnumerable<T> tables)
 		{
-			_databaseHandler.DeleteEntries(tables);
+			return _databaseHandler.DeleteEntries(tables);
 		}
 
-		public void InsertUpdate<T>(IEnumerable<T> tables)
+		public bool InsertUpdate<T>(IEnumerable<T> tables)
 		{
-			_databaseHandler.InsertUpdate(tables);
+			return _databaseHandler.InsertUpdate(tables);
 		}
 
 		public IEnumerable<RankingModel> GetRanking()
@@ -60,6 +60,11 @@ namespace WebserviceMain.Database
 		public Question GetQuestionById(int questionId)
 		{
 			return _databaseHandler.GetQuestionById(questionId);
+		}
+
+		public IEnumerable<Question> GetAllQuestions()
+		{
+			return _databaseHandler.GetAllQuestions();
 		}
 	}
 }

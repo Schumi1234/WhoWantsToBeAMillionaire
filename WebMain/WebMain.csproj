@@ -10,10 +10,6 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\Edit\" />
-  </ItemGroup>
-
   <Import Project="..\SharedModels\SharedModels.projitems" Label="Shared" />
 
 </Project>

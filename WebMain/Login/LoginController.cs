@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SharedModels;
 using WebMain.DataServiceProvider;
+using WebMain.DataServiceProvider.Enums;
 using WebMain.Models.Login;
 
 namespace WebMain.Login
@@ -36,8 +37,8 @@ namespace WebMain.Login
 			};
 
 			var content = JsonConvert.SerializeObject(requestModel);
-			var success = _webserviceProvider.PostDataFromWebService<bool>(@"https://localhost:44339/Login/DoLogin", content);
-			return false;
+			var success = _webserviceProvider.PostDataFromWebService<bool>(Controllers.Login.ToString(), "DoLogin", content);
+			return success;
 		}
 
 		public IActionResult Return()

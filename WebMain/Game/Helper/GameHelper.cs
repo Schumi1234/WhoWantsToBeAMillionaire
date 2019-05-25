@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using SharedModels;
 using WebMain.DataServiceProvider;
+using WebMain.DataServiceProvider.Enums;
 using WebMain.Models.Game;
 
 namespace WebMain.Game.Helper
@@ -20,19 +19,19 @@ namespace WebMain.Game.Helper
 
 		public IEnumerable<CategoryModel> GetCategories()
 		{
-			return _webserviceProvider.GetDataFromWebService<IEnumerable<CategoryModel>>(@"https://localhost:44339/WhoWantsToBeAMillionaire/Categories");
+			return _webserviceProvider.GetDataFromWebService<IEnumerable<CategoryModel>>(Controllers.WhoWantsToBeAMillionaire.ToString(), "Categories");
 		}
 
 		public IEnumerable<QuestionModel> GetQuestions(IEnumerable<int> categoryIds)
 		{
 			var jsonObject = JsonConvert.SerializeObject(categoryIds);
-			return _webserviceProvider.PostDataFromWebService<IEnumerable<QuestionModel>>(@"https://localhost:44339/WhoWantsToBeAMillionaire/Question", jsonObject);
+			return _webserviceProvider.PostDataFromWebService<IEnumerable<QuestionModel>>(Controllers.WhoWantsToBeAMillionaire.ToString(), "Question", jsonObject);
 		}
 
 		public IEnumerable<AnswerModel> GetAnswers(int questionId)
 		{
 			var jsonObject = JsonConvert.SerializeObject(questionId);
-			return _webserviceProvider.PostDataFromWebService<IEnumerable<AnswerModel>>(@"https://localhost:44339/WhoWantsToBeAMillionaire/Answers", jsonObject);
+			return _webserviceProvider.PostDataFromWebService<IEnumerable<AnswerModel>>(Controllers.WhoWantsToBeAMillionaire.ToString(), "Answers", jsonObject);
 		}
 
 		public void SetNextQuestion(GameRoundViewModel gameRound)
@@ -43,7 +42,7 @@ namespace WebMain.Game.Helper
 
 		public bool SaveGame()
 		{
-			return _webserviceProvider.GetDataFromWebService<bool>(@"https://localhost:44339/WhoWantsToBeAMillionaire/SaveGame");
+			return _webserviceProvider.GetDataFromWebService<bool>(Controllers.WhoWantsToBeAMillionaire.ToString(),"SaveGame");
 		}
 	}
 }

@@ -7,8 +7,9 @@ namespace WebMain.DataServiceProvider
 {
 	public class WebserviceProvider
 	{
-		public T GetDataFromWebService<T>(string url)
+		public T GetDataFromWebService<T>(string controllerName, string actionName)
 		{
+			var url = GetUrl(controllerName, actionName);
 			var client = new HttpClient();
 			var response = client.GetAsync(new Uri(url)).Result;
 			if (!response.IsSuccessStatusCode) return default(T);
@@ -16,8 +17,15 @@ namespace WebMain.DataServiceProvider
 			return JsonConvert.DeserializeObject<T>(responseString);
 		}
 
-		public T PostDataFromWebService<T>(string url, string content)
+		private static string GetUrl(string controllerName, string actionName)
 		{
+			var url = $"https://localhost:44339/{controllerName}/{actionName}";
+			return url;
+		}
+
+		public T PostDataFromWebService<T>(string controllerName, string actionName, string content)
+		{
+			var url = GetUrl(controllerName, actionName);
 			var stringContent = new StringContent(content, Encoding.UTF8, "application/json");
 			var client = new HttpClient();
 			var response = client.PostAsync(new Uri(url), stringContent).Result;
