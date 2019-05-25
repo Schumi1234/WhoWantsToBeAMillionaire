@@ -17,13 +17,13 @@ namespace WebserviceMain.Database
 			_dataContext = dataContext;
 		}
 
-		public Question GetRandomQuestion(int categoryId, IEnumerable<int> playedQuestions)
+		public IEnumerable<Question> GetQuestionsByCategories(IEnumerable<int> categoryIds)
 		{
 			var questions = _dataContext.Question
-				.Where(a => a.intCategoryId == categoryId && playedQuestions.All(b => b != a.intQuestionId))
+				.Where(a => categoryIds.All(b => b == a.intCategoryId))
 				.ToList();
 			questions.Shuffle();
-			return questions.FirstOrDefault();
+			return questions;
 		}
 
 		public IEnumerable<Answer> GetAnswers(int questionId)
@@ -170,6 +170,11 @@ namespace WebserviceMain.Database
 			};
 			InsertUpdate(test);
 			return false;
+		}
+
+		public Question GetQuestionById(int questionId)
+		{
+			return _dataContext.Question.Single(a => a.intQuestionId == questionId);
 		}
 	}
 }

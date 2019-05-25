@@ -1,7 +1,11 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Wer wird Millionär";
 }
 
-<h2>Wer wird Millionär</h2>
-
+@using (Html.BeginForm("ChooseCategories", "Game", FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
+{
+<div class="form-group">
+    <h2>Wer wird Millionär</h2>
+    <input type="submit" class="btn btn-primary" value="Spielen" />
+</div>
+}

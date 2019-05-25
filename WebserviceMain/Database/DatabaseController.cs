@@ -17,9 +17,9 @@ namespace WebserviceMain.Database
 			_databaseHandler = databaseHandler;
 		}
 
-		public Question GetRandomQuestion(int categoryId, IEnumerable<int> playedQuestions)
+		public IEnumerable<Question> GetQuestionsByCategories(IEnumerable<int> categoryIds)
 		{
-			return _databaseHandler.GetRandomQuestion(categoryId, playedQuestions);
+			return _databaseHandler.GetQuestionsByCategories(categoryIds);
 		}
 
 		public IEnumerable<Category> GetCategories()
@@ -55,6 +55,11 @@ namespace WebserviceMain.Database
 		public bool AddUser(string username, string password)
 		{
 			return _databaseHandler.AddUser(username, password);
+		}
+
+		public Question GetQuestionById(int questionId)
+		{
+			return _databaseHandler.GetQuestionById(questionId);
 		}
 	}
 }

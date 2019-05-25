@@ -3,11 +3,10 @@ using SharedModels;
 
 namespace WebMain.Models.Game
 {
-	public class GameViewModel
+	public class QuestionViewModel : BaseViewModel
 	{
-		public QuestionModel Question { get; set; }
+		public string Question { get; set; }
 		public IEnumerable<AnswerModel> Answers { get; set; }
-
-		public int Score { get; set; }
+		public double PercentageOfCorrectlyAnswered { get; set; }
 	}
 }

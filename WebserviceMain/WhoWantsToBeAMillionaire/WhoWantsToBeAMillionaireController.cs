@@ -24,9 +24,9 @@ namespace WebserviceMain.WhoWantsToBeAMillionaire
 
 		[Route("Question")]
 		[HttpPost]
-		public QuestionModel GetRandomQuestion(int categoryId, IEnumerable<int> playedQuestions)
+		public IEnumerable<QuestionModel> GetRandomQuestion(IEnumerable<int> categoryIds)
 		{
-			return _gameHandler.GetRandomQuestion(categoryId, playedQuestions);
+			return _gameHandler.GetQuestions(categoryIds);
 		}
 
 		[Route("Ranking")]
@@ -48,6 +48,13 @@ namespace WebserviceMain.WhoWantsToBeAMillionaire
 		public bool CheckAnswer(int answerId)
 		{
 			return _gameHandler.CheckAnswer(answerId);
+		}
+
+		[Route("SaveGame")]
+		[HttpGet]
+		public bool SaveGame(SaveGameRequestModel playerName)
+		{
+			return _gameHandler.SaveGame(playerName);
 		}
 	}
 }
