@@ -1,0 +1,27 @@
+﻿@model WebMain.Models.Game.GameRoundViewModel
+@{
+    ViewData["Title"] = "Name für Highscoreliste";
+}
+
+<h2>Herzlichen Glückwunsch</h2>
+@using (Html.BeginForm("SaveGame", "Game", FormMethod.Post, new { @class = "form-horizontal", viewModel = Model }))
+{
+    <div>
+        @Html.Label("Name")
+    </div>
+    <div>
+        @Html.TextBoxFor(m => m.PlayerName, new { @class = "form-control" })
+    </div>
+
+    <input type="submit" class="btn btn-default" value="Speichern" />
+
+    for (var i = 0; i < Model.Categories.Count(); i++)
+    {
+        @Html.HiddenFor(m => m.Categories[i].CategoryId)
+    }
+
+    @Html.HiddenFor(m => m.GameBegin);
+    @Html.HiddenFor(m => m.GameEnd);
+    @Html.HiddenFor(m => m.Score);
+    @Html.HiddenFor(m => m.PlayerName);
+}

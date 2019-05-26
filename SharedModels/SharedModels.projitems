@@ -19,5 +19,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)SaveCategoriesRequestModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SaveGameRequestModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SaveQuestionAndAnswersRequestModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SaveQuestionAnswerRequestModel.cs" />
   </ItemGroup>
 </Project>

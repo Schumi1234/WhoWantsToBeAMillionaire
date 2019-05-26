@@ -5,19 +5,32 @@
 }
 
 <h2>Login</h2>
-<div class="smart-search">
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="input-validation-error">
+        <p style="color: red; font-size: x-large">@Model.ErrorMessage</p>
+    </div>
+}
+<div class="container-fluid">
     @using (Html.BeginForm("Login", "Login", FormMethod.Post, new { @class = "form-horizontal", role = "form", username = Model.UserName, password = Model.Password }))
     {
-    <div class="form-group">
-        <div class="hidden-xs col-sm-1 col-md-1 col-lg-1 text-right">
-            @Html.LabelFor(m => m.UserName, "Benutzername", new { @class = "control-label" })
+        <div class="form-group">
+            <div>
+                @Html.LabelFor(m => m.UserName, "Benutzername")
+            </div>
+            <div>
+                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.UserName)
+            </div>
+            <div>
+                @Html.LabelFor(m => m.Password, "Passwort")
+            </div>
+            <div>
+                @Html.TextBoxFor(m => m.Password, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Password)
+            </div>
         </div>
-        <div class="col-xs-8 col-sm-8 col-md-9 col-lg-10">
-            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
-            <br />
-            <input type="submit" value="Anmelden" />
-            <input type="submit" value="Zurück"  asp-action="Return"/>
-        </div>
-    </div>
+        <input type="submit" value="Anmelden" />
+        <input type="submit" value="Zurück" asp-action="Return" />
     }
 </div>

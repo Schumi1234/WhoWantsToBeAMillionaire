@@ -16,8 +16,8 @@ namespace WebserviceMain.Joker
 		}
 
 		[HttpPost]
-		[Route("fiftyFifty")]
-		public IEnumerable<AnswerModel> FiftyFiftyJoker(int questionId)
+		[Route("FiftyFifty")]
+		public IEnumerable<AnswerModel> FiftyFiftyJoker([FromBody] int questionId)
 		{
 			return _jokerHandler.FiftyFiftyJoker(questionId);
 		}

@@ -1,67 +1,57 @@
-﻿@using System.Globalization
-@model WebMain.Models.Game.GameRoundViewModel
+﻿@model WebMain.Models.Game.GameRoundViewModel
 @{
-    ViewData["Title"] = "Spielrunde";
+    ViewData["Title"] = "Antwort";
 }
 
-@using (Html.BeginForm("ShowResults", "Game", FormMethod.Post, new { @class = "form-horizontal", role = "form", viewModel = Model }))
+<h2>Resultat</h2>
+@using (Html.BeginForm("GameRound", "Game", FormMethod.Post, new { @class = "form-horizontal", role = "form", gameRoundViewModel = Model }))
 {
-    <br />
-    @Html.Label($"Punktzahl: {Model.Score}")
-    <br />
-    @Html.Label($"Quote richtig beantwortet: {Model.QuestionForTheRound.PercentageOfCorrectlyAnswered:0.00}%")
     <br />
     <h3>@Model.QuestionForTheRound.Question</h3>
     <br />
     <fieldset>
-        @for (var i = 0; i < Model.QuestionForTheRound.Answers.Count; i++)
+        @for (var i = 0; i < 4; i++)
         {
-            if (Model.QuestionForTheRound.Answers[i].DisableAnswer)
+            if (!Model.QuestionForTheRound.Answers[i].Correct && i == Model.IndexOfSelectedAnswer)
             {
-                <div>
-                    @Html.RadioButtonFor(m => m.IndexOfSelectedAnswer, i, new { disabled = "disabled" })
+                <div class="form-control" style="background: lightcoral">
+                    @Html.Label(Model.QuestionForTheRound.Answers[i].Answer)
+                </div>
+            }
+            else if (Model.QuestionForTheRound.Answers[i].Correct)
+            {
+                <div class="form-control" style="background: lightgreen">
                     @Html.Label(Model.QuestionForTheRound.Answers[i].Answer)
                 </div>
             }
             else
             {
-                <div>
-                    @Html.RadioButtonFor(m => m.IndexOfSelectedAnswer, i)
+                <div class="form-control">
                     @Html.Label(Model.QuestionForTheRound.Answers[i].Answer)
                 </div>
             }
         }
     </fieldset>
-    if (Model.JokerUsed)
-    {
-        <text>Joker verbraucht</text>
-    }
-    else
-    {
-        <input type="submit" class="btn btn-default" value="50:50 Joker" name="Joker" />
-    }
-    <input type="submit" class="btn btn-default" value="Auswahl bestätigen" />
-
+    <input type="submit" class="btn btn-default" value="Weiter" />
+    <input type="submit" class="btn btn-default" value="Spiel beenden" name="End" />
 
     <!--Save values in models, otherwise data will be lost-->
-    @Html.HiddenFor(m => m.Score)
     @Html.HiddenFor(m => m.IndexOfSelectedAnswer);
     @Html.HiddenFor(m => m.GameBegin);
-    @Html.HiddenFor(m => m.JokerUsed);
+    @Html.HiddenFor(m => m.JokerUsed, new { @Value = Model.JokerUsed });
+    @Html.HiddenFor(m => m.Score, new { @Value = Model.Score });
     @Html.HiddenFor(m => m.QuestionForTheRound.QuestionId)
     @Html.HiddenFor(m => m.QuestionForTheRound.PercentageOfCorrectlyAnswered)
     @Html.HiddenFor(m => m.QuestionForTheRound.Question)
-    for (var i = 0; i < Model.Categories.Count(); i++)
-    {
-        @Html.HiddenFor(m => m.Categories[i].CategoryId)
-    }
-
     if (Model.QuestionsToPlay.Count == 0)
     {
         @Html.HiddenFor(m => m.QuestionsToPlay)
     }
-
-    for (var i = 0; i < Model.QuestionsToPlay.Count(); i++)
+    for (var i = 0; i < Model.Categories.Count(); i++)
+    {
+        @Html.HiddenFor(m => m.Categories[i].CategoryId)
+    }
+    for (var i = 0; i < Model.QuestionsToPlay.Count; i++)
     {
         @Html.HiddenFor(m => m.QuestionsToPlay[i].QuestionId)
         @Html.HiddenFor(m => m.QuestionsToPlay[i].Question)
@@ -74,7 +64,7 @@
             @Html.HiddenFor(m => m.QuestionsToPlay[i].Answers[x].QuestionId)
         }
     }
-    for (var i = 0; i < Model.QuestionForTheRound.Answers.Count(); i++)
+    for (var i = 0; i < Model.QuestionForTheRound.Answers.Count; i++)
     {
         @Html.HiddenFor(m => m.QuestionForTheRound.Answers[i].QuestionId)
         @Html.HiddenFor(m => m.QuestionForTheRound.Answers[i].Correct)
@@ -82,3 +72,4 @@
         @Html.HiddenFor(m => m.QuestionForTheRound.Answers[i].AnswerId)
     }
 }
+

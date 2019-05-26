@@ -25,5 +25,17 @@ namespace WebserviceMain.Database.Tables
 		//[DataType(DataType.Password)]
 		[Display(Name = "Password")]
 		public string strPassword { get; set; }
+
+
+		[Required]
+		[Column(TypeName = "datetime")]
+		//[DataType(DataType.Password)]
+		[Display(Name = "LastLoggedIn")]
+		public DateTime datLastSignedIn { get; set; }
+
+		[Required]
+		[Column(TypeName = "bit")]
+		[Display(Name = "LoggedIn")]
+		public bool blnLoggedIn { get; set; }
 	}
 }

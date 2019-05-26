@@ -33,6 +33,8 @@ namespace WebserviceMain.Edit
 			IEnumerable<Category> categoryTable;
 			if (requestModel.EditedCategories.Any(a => a.Delete && a.Id != 0))
 			{
+
+				var game2CategoryTable = _databaseController.GetGame2Categories(requestModel.EditedCategories.Where(a => a.Delete).Select(a => a.Id));
 				categoryTable = requestModel.EditedCategories.Where(a => a.Delete).Select(a => new Category
 				{
 					intCategoryId = a.Id,
@@ -166,6 +168,21 @@ namespace WebserviceMain.Edit
 			success = _databaseController.Delete(questionTable);
 
 			return success;
+		}
+
+		public IEnumerable<RankingModel> GetRanking()
+		{
+			return _databaseController.GetRanking();
+		}
+
+		public bool DeleteHighScoreEntries(IEnumerable<int> gameIds)
+		{
+			var idList = gameIds.ToList();
+			var game2Categories = _databaseController.GetGame2CategoriesByGame(idList);
+			_databaseController.Delete(game2Categories);
+			var games = _databaseController.GetGames().Where(a => idList.Any(b => b == a.intGameID));
+			_databaseController.Delete(games);
+			return true;
 		}
 	}
 }

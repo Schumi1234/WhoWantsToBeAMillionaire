@@ -16,7 +16,7 @@ namespace WebserviceMain.Joker
 
 		public IEnumerable<AnswerModel> FiftyFiftyJoker(int questionId)
 		{
-			var answers = _databaseController.GetAnswers(questionId);
+			var answers = _databaseController.GetAnswers(questionId).ToList();
 
 			return answers.Where(a => !a.blnCorrect).Take(2).Select(b => new AnswerModel
 			{

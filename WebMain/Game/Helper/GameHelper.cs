@@ -40,9 +40,38 @@ namespace WebMain.Game.Helper
 			gameRound.QuestionsToPlay.Remove(gameRound.QuestionForTheRound);
 		}
 
-		public bool SaveGame()
+		public bool SaveGame(GameRoundViewModel  viewModel)
 		{
-			return _webserviceProvider.GetDataFromWebService<bool>(Controllers.WhoWantsToBeAMillionaire.ToString(),"SaveGame");
+			var requestModel = new SaveGameRequestModel
+			{
+				Score = viewModel.Score,
+				GameEnd = viewModel.GameEnd,
+				PlayerName = viewModel.PlayerName,
+				GameBegin = viewModel.GameBegin,
+				Categories = viewModel.Categories.Select(a => new CategoryModel
+				{
+					CategoryId = a.CategoryId
+				}).ToList()
+			};
+			var content = JsonConvert.SerializeObject(requestModel);
+			return _webserviceProvider.PostDataFromWebService<bool>(Controllers.WhoWantsToBeAMillionaire.ToString(),"SaveGame", content);
+		}
+
+		public IEnumerable<AnswerModel> Joker(int questionId)
+		{
+			var content = JsonConvert.SerializeObject(questionId);
+			return _webserviceProvider.PostDataFromWebService<IEnumerable<AnswerModel>>(Controllers.Joker.ToString(), "FiftyFifty", content);
+		}
+
+		public bool SaveQuestionAnswer(bool correct, int questionId)
+		{
+			var requestModel = new SaveQuestionAnswerRequestModel
+			{
+				Correct = correct,
+				QuestionId = questionId
+			};
+			var content = JsonConvert.SerializeObject(requestModel);
+			return _webserviceProvider.PostDataFromWebService<bool>(Controllers.WhoWantsToBeAMillionaire.ToString(), "SaveQuestionAnswer", content);
 		}
 	}
 }

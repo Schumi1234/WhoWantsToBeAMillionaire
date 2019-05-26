@@ -20,5 +20,12 @@ namespace WebserviceMain.Login
 		{
 			return _loginHandler.DoLogin(model);
 		}
+
+		[Route("CheckLoggedIn")]
+		[HttpGet]
+		public bool LoggedIn()
+		{
+			return _loginHandler.LoggedIn();
+		}
 	}
 }

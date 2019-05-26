@@ -13,5 +13,7 @@ namespace SharedModels
 		public string TimeOfGame { get; set; } 
 		public IEnumerable<CategoryModel> PlayedCategories { get; set; }
 		public int Score { get; set; }
+		public bool Delete { get; set; }
+		public int GameId { get; set; }
 	}
 }

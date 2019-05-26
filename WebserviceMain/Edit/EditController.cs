@@ -73,5 +73,19 @@ namespace WebserviceMain.Edit
 		{
 			return _editHandler.DeleteQuestionAndAnswers(requestModel);
 		}
+
+		[Route("Ranking")]
+		[HttpGet]
+		public IEnumerable<RankingModel> GetRanking()
+		{
+			return _editHandler.GetRanking();
+		}
+
+		[Route("DeleteHighScore")]
+		[HttpPost]
+		public bool DeleteHighscoreEntries(IEnumerable<int> gameIds)
+		{
+			return _editHandler.DeleteHighScoreEntries(gameIds);
+		}
 	}
 }

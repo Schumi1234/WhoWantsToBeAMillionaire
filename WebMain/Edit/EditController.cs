@@ -18,14 +18,18 @@ namespace WebMain.Edit
 			_webserviceProvider = webserviceProvider;
 		}
 
-		public IActionResult EditHighScoreList()
+		private bool CheckLoggedIn()
 		{
-			return View();
+			return _webserviceProvider.GetDataFromWebService<bool>(Controllers.Login.ToString(), "CheckLoggedIn");
 		}
 
 		[HttpGet]
 		public IActionResult EditCategories()
 		{
+			if (!CheckLoggedIn())
+			{
+				return RedirectToAction("Login", "Login");
+			}
 			var viewModel = GetAllCategories();
 			return View(viewModel);
 		}
@@ -33,13 +37,24 @@ namespace WebMain.Edit
 		[HttpPost]
 		public IActionResult EditCategories(EditCategoriesViewModel requestModel)
 		{
+			if (!string.IsNullOrEmpty(Request.Form["newCategory"]))
+			{
+				requestModel.Categories.Add(new EditCategoryViewModel());
+				return View(requestModel);
+			}
+
+			if (requestModel.Categories.Any(a => string.IsNullOrEmpty(a.Name)))
+			{
+				requestModel.ErrorMessage = "Alle Textboxen müssen ausgefüllt sein";
+				return View(requestModel);
+			}
+
 			var success = SaveCategories(requestModel);
 			var viewModel = GetAllCategories();
 			if (!success)
 			{
 				viewModel.ErrorMessage = "Ein Fehler ist aufgetreten";
 			}
-
 			return View(viewModel);
 		}
 
@@ -76,6 +91,11 @@ namespace WebMain.Edit
 
 		public IActionResult EditQuestions()
 		{
+			if (!CheckLoggedIn())
+			{
+				return RedirectToAction("Login", "Login");
+			}
+
 			var categories = _webserviceProvider.GetDataFromWebService<IEnumerable<CategoryModel>>(Controllers.Edit.ToString(), "AllCategories");
 			var questions = _webserviceProvider.GetDataFromWebService<IEnumerable<QuestionModel>>(Controllers.Edit.ToString(), "AllQuestions");
 			var answers = _webserviceProvider.GetDataFromWebService<IEnumerable<AnswerModel>>(Controllers.Edit.ToString(), "AllAnswers");
@@ -102,7 +122,7 @@ namespace WebMain.Edit
 		}
 
 		[HttpPost]
-		public IActionResult QuestionDetail(IEnumerable<CategoryModel> categories)
+		public IActionResult QuestionDetail()
 		{
 			var viewModel = new EditQuestionAndAnswerViewModel
 			{
@@ -113,8 +133,8 @@ namespace WebMain.Edit
 					new AnswerModel(),
 					new AnswerModel()
 				},
-				Categories = categories
-			};
+				Categories = _webserviceProvider.GetDataFromWebService<IEnumerable<CategoryModel>>(Controllers.Edit.ToString(), "AllCategories").ToList()
+		};
 			return View(viewModel);
 		}
 
@@ -138,6 +158,11 @@ namespace WebMain.Edit
 
 		public IActionResult SaveQuestion(EditQuestionAndAnswerViewModel viewModel)
 		{
+			if (viewModel.Answers.Any(a => string.IsNullOrEmpty(a.Answer)) || string.IsNullOrEmpty(viewModel.Name))
+			{
+				viewModel.ErrorMessage = "Alle Textboxen müssen ausgefüllt werden.";
+				return View("QuestionDetail", viewModel);
+			}
 			viewModel.Answers[viewModel.CorrectAnswerIndex].Correct = true;
 			var requestModel = new SaveQuestionAndAnswersRequestModel
 			{
@@ -154,21 +179,43 @@ namespace WebMain.Edit
 			return RedirectToAction("EditQuestions");
 		}
 
-
-		//toDO: doesnt work yet
-		[HttpGet]
 		public IActionResult DeleteQuestionAndAnswers(EditQuestionAndAnswersViewModel viewModel)
 		{
-			/*
+			var answerIds = new List<int>();
+			foreach (var question in viewModel.QuestionsAndAnswers.Where(a => a.Delete))
+			{
+					answerIds.AddRange(question.Answers.Select(a => a.AnswerId));
+			}
+			
 			var requestModel = new DeleteQuestionAndAnswersRequestModel
 			{
-				QuestionIds = questionIds,
-				AnswerIds = answersIds
+				QuestionIds = viewModel.QuestionsAndAnswers.Where(a => a.Delete).Select(a => a.Id),
+				AnswerIds = answerIds
 			};
 			var content = JsonConvert.SerializeObject(requestModel);
 			var success = _webserviceProvider.PostDataFromWebService<bool>(Controllers.Edit.ToString(), "DeleteQuestionWithAnswer", content);
-			*/
+			
 			return RedirectToAction("EditQuestions");
+		}
+
+		[HttpGet]
+		public IActionResult EditHighscoreList()
+		{
+			var ranking = _webserviceProvider.GetDataFromWebService<IEnumerable<RankingModel>>(Controllers.Edit.ToString(), "Ranking");
+			var viewModel = new RankingViewModel
+			{
+				LoggedIn = CheckLoggedIn(),
+				Rankings = ranking.ToList()
+			};
+			return View(viewModel);
+		}
+
+		[HttpPost]
+		public IActionResult DeleteHighScoreEntries(RankingViewModel viewModel)
+		{
+			var content =  JsonConvert.SerializeObject(viewModel.Rankings.Select(a => a.GameId));
+			_webserviceProvider.PostDataFromWebService<bool>(Controllers.Edit.ToString(), "DeleteHighScore", content);
+			return RedirectToAction("EditHighScoreList");
 		}
 	}
 }

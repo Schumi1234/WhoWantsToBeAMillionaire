@@ -71,5 +71,30 @@ namespace WebserviceMain.Database
 		{
 			return _databaseHandler.GetAllAnswers();
 		}
+
+		public IEnumerable<Game2Category> GetGame2Categories(IEnumerable<int> categoryIds)
+		{
+			return _databaseHandler.GetGame2Categories(categoryIds);
+		}
+
+		public IEnumerable<Game2Category> GetGame2CategoriesByGame(IEnumerable<int> gameIds)
+		{
+			return _databaseHandler.GetGame2CategoriesByGame(gameIds);
+		}
+
+		public IEnumerable<Game> GetGames()
+		{
+			return _databaseHandler.GetGames();
+		}
+
+		public bool CheckLogin(string modelUsername, string password)
+		{
+			return _databaseHandler.CheckLogin(modelUsername, password);
+		}
+
+		public bool LoggedIn()
+		{
+			return _databaseHandler.LoggedIn();
+		}
 	}
 }

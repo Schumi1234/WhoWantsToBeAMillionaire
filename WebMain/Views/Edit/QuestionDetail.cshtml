@@ -4,6 +4,12 @@
 }
 
 <h2>Frage hinzufügen</h2>
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="input-validation-error">
+        <p style="color: red; font-size: x-large">@Model.ErrorMessage</p>
+    </div>
+}
 @using (Html.BeginForm("SaveQuestion", "Edit", FormMethod.Post, new { @class = "form-horizontal", role = "form", viewModel = Model }))
 {
     <div class="form-group">
@@ -11,7 +17,7 @@
             @Html.Label("Kategorie")
         </div>
         <div>
-            @Html.DropDownListFor(m => m.SelectedCategoryId, new SelectList(Model.Categories, "CategoryId",  "Category"))
+            @Html.DropDownListFor(m => m.SelectedCategoryId, new SelectList(Model.Categories, "CategoryId", "Category"))
             <br />
         </div>
         <div>
@@ -25,7 +31,7 @@
             @for (var i = 0; i < 4; i++)
             {
                 <div>
-                    @Html.Label("Korrekt") 
+                    @Html.Label("Korrekt")
                     @Html.RadioButtonFor(m => m.CorrectAnswerIndex, i)
                 </div>
                 <div>
@@ -41,6 +47,12 @@
             }
         </fieldset>
         <input type="submit" value="Speichern" class="btn-default" />
+        
+        @for (var i = 0; i < Model.Categories.Count; i++)
+        {
+            @Html.HiddenFor(m => m.Categories[i].Category)
+            @Html.HiddenFor(m => m.Categories[i].CategoryId)
+        }
     </div>
 }
 

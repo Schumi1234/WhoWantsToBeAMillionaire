@@ -15,13 +15,12 @@ namespace WebserviceMain.Login
 
 		public bool DoLogin(LoginRequestModel model)
 		{
-			_databaseController.AddUser(model.Username, model.Password);
-			throw new NotImplementedException();
+			return _databaseController.CheckLogin(model.Username, model.Password);
 		}
 
-		private bool CheckCredentials(LoginRequestModel model)
+		public bool LoggedIn()
 		{
-			throw new NotImplementedException();
+			return _databaseController.LoggedIn();
 		}
 	}
 }

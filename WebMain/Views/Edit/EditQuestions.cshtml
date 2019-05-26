@@ -4,7 +4,7 @@
 }
 
 <h2>Fragen und Antworten bearbeiten</h2>
-@using (Html.BeginForm("QuestionDetail", "Edit", FormMethod.Post, new { @class = "form-horizontal", role = "form", viewModel = Model.Categories }))
+@using (Html.BeginForm("DeleteQuestionAndAnswers", "Edit", FormMethod.Post, new { @class = "form-horizontal", role = "form", viewModel = Model }))
 {
     <div class="table-responsive">
         <table class="table table-bordered">
@@ -36,7 +36,7 @@
                             }
                             else
                             {
-                                <td>@Html.Label(Model.QuestionsAndAnswers[i].Answers[x].Answer)</td>
+                                <td>@Html.Label($"{Model.QuestionsAndAnswers[i].Answers[x].Answer}")</td>
                             }
                         }
 
@@ -54,8 +54,9 @@
         answerId.AddRange(questionAndAnswers.Answers.Select(a => a.AnswerId));
     }
 
-    <input class="btn-default" type="submit" value="Neue Frage hinzufügen" />
-    
+    <input class="btn-default" type="submit" value="Neue Frage hinzufügen" asp-action="QuestionDetail"/>
+    <input class="btn-default" type="submit" value="Markierte Löschen" />
+
     <!--Save values in models, otherwise data will be lost-->
     for (var i = 0; i < Model.Categories.Count; i++)
     {
@@ -63,7 +64,7 @@
         @Html.HiddenFor(m => m.Categories[i].Category)
     }
 
-    for (var i = 0; i < Model.Categories.Count; i++)
+    for (var i = 0; i < Model.QuestionsAndAnswers.Count; i++)
     {
         @Html.HiddenFor(m => m.QuestionsAndAnswers[i].Id)
         for (var x = 0; x < Model.QuestionsAndAnswers[i].Answers.Count; x++)

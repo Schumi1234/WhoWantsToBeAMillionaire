@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using SharedModels;
 using WebserviceMain.Database;
@@ -45,7 +46,7 @@ namespace WebserviceMain.WhoWantsToBeAMillionaire
 				{
 					Question = question.strName,
 					QuestionId = question.intQuestionId,
-					AnsweredCorrectlyPercentage = answeredCorrectlyPercentage,
+					AnsweredCorrectlyPercentage = Math.Round(answeredCorrectlyPercentage),
 					NumberAnsweredCorrectly = question.intAnsweredCorrectly
 				};
 			});
@@ -66,18 +67,18 @@ namespace WebserviceMain.WhoWantsToBeAMillionaire
 			});
 		}
 
-		public bool CheckAnswer(int answerId)
+		public bool SaveQuestionAnswer(SaveQuestionAnswerRequestModel model)
 		{
-			var answer = _databaseController.GetAnswer(answerId);
-			var question = _databaseController.GetQuestionById(answer.intQuestionID);
-			if (answer.blnCorrect)
+			bool success;
+			var question = _databaseController.GetQuestionById(model.QuestionId);
+			if (model.Correct)
 			{
 				question.intAnsweredCorrectly += 1;
 				var questions = new List<Question>
 				{
 					question
 				};
-				_databaseController.InsertUpdate(questions);
+				success = _databaseController.InsertUpdate(questions);
 			}
 			else
 			{
@@ -86,10 +87,10 @@ namespace WebserviceMain.WhoWantsToBeAMillionaire
 				{
 					question
 				};
-				_databaseController.InsertUpdate(questions);
+				success = _databaseController.InsertUpdate(questions);
 			}
 
-			return answer.blnCorrect;
+			return success;
 		}
 
 		public bool SaveGame(SaveGameRequestModel saveGameRequestModel)
@@ -101,13 +102,18 @@ namespace WebserviceMain.WhoWantsToBeAMillionaire
 				strPlayerName = saveGameRequestModel.PlayerName,
 				datEnd = saveGameRequestModel.GameEnd
 			};
-
 			var newGameList = new List<Game>
 			{
 				newGame
 			};
 			_databaseController.InsertUpdate(newGameList);
-
+			var gamesId = _databaseController.GetGames().Last().intGameID;
+			var newGame2Categories = saveGameRequestModel.Categories.Select(a => new Game2Category
+			{
+				intGameID = gamesId,
+				intCategoryID = a.CategoryId
+			});
+			_databaseController.InsertUpdate(newGame2Categories);
 			return true;
 		}
 	}

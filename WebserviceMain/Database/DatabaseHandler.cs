@@ -25,7 +25,7 @@ namespace WebserviceMain.Database
 		public IEnumerable<Question> GetQuestionsByCategories(IEnumerable<int> categoryIds)
 		{
 			var questions = _dataContext.Question
-				.Where(a => categoryIds.All(b => b == a.intCategoryId))
+				.Where(a => categoryIds.Any(b => b == a.intCategoryId))
 				.ToList();
 			questions.Shuffle();
 			return questions;
@@ -55,6 +55,7 @@ namespace WebserviceMain.Database
 			return games
 				.Select(x => new RankingModel
 				{
+					GameId = x.intGameID,
 					GameBegin = x.datBegin,
 					GameEnd = x.datEnd,
 					PlayerName = x.strPlayerName,
@@ -94,7 +95,6 @@ namespace WebserviceMain.Database
 			{
 				try
 				{
-					//ToDo:Test delete
 					switch (tables)
 					{
 						case IEnumerable<Category> categories:
@@ -139,7 +139,6 @@ namespace WebserviceMain.Database
 				{
 					switch (tables)
 					{
-						//ToDo: Test tables with foreign key
 						case IEnumerable<Category> categories:
 							_dataContext.Category.UpdateRange(categories);
 							break;
@@ -183,7 +182,6 @@ namespace WebserviceMain.Database
 		public bool AddUser(string username, string password)
 		{
 			
-			// toDO: Hash password
 			var user = new User
 			{
 				strPassword = password,
@@ -205,6 +203,43 @@ namespace WebserviceMain.Database
 		public IEnumerable<Answer> GetAllAnswers()
 		{
 			return _dataContext.Answer;
+		}
+
+		public IEnumerable<Game2Category> GetGame2Categories(IEnumerable<int> categoryIds)
+		{
+			return _dataContext.Game2Category.Where(a => categoryIds.Any(b => b == a.intCategoryID));
+		}
+
+		public IEnumerable<Game> GetGames()
+		{
+			return _dataContext.Game;
+		}
+
+		public IEnumerable<Game2Category> GetGame2CategoriesByGame(IEnumerable<int> gameIds)
+		{
+			return _dataContext.Game2Category.Where(a => gameIds.Any(b => b == a.intGameID));
+		}
+
+		public bool CheckLogin(string modelUsername, string password)
+		{
+			var user = _dataContext.User.SingleOrDefault(a => a.strUsername.Equals(modelUsername) && a.strPassword.Equals(password));
+			if (user == null) return false;
+			user.blnLoggedIn = true;
+			user.datLastSignedIn = DateTime.Now;
+			var userList = new List<User> {user};
+			InsertUpdate(userList);
+			return true;
+		}
+
+		public bool LoggedIn()
+		{
+			var user = _dataContext.User.Single(a => a.strUsername.Equals("Administrator"));
+			var span = DateTime.Now.Subtract(user.datLastSignedIn);
+			if ((span.TotalMinutes < 30)) return user.blnLoggedIn;
+			user.blnLoggedIn = false;
+			var userList = new List<User> { user };
+			InsertUpdate(userList);
+			return user.blnLoggedIn;
 		}
 	}
 }

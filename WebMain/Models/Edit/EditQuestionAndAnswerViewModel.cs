@@ -8,7 +8,7 @@ namespace WebMain.Models.Edit
 {
 	public class EditQuestionAndAnswerViewModel : BaseViewModel
 	{
-		public IEnumerable<CategoryModel> Categories { get; set; }
+		public List<CategoryModel> Categories { get; set; }
 		public int Id { get; set; }
 		public string Name { get; set; }
 

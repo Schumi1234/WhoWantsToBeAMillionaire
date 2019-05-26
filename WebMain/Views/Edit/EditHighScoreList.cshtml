@@ -1,7 +1,53 @@
-﻿
+﻿@model WebMain.Models.Edit.RankingViewModel
 @{
-    ViewData["Title"] = "EditHighScoreList";
+    ViewData["Title"] = "Highscores";
 }
 
-<h2>EditHighScoreList</h2>
+<h2>Highscores löschen</h2>
+@using (Html.BeginForm("DeleteHighScoreEntries", "Edit", FormMethod.Post, new { viewModel = Model }))
+{
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Rang</th>
+                    <th>Gewichtete Punkte</th>
+                    <th>Name</th>
+                    <th>Zeitpunkt des Spiels</th>
+                    <th>Anzahl Punkte</th>
+                    <th>Dauer des Quiz</th>
+                    <th>Gewählte Kategorien</th>
+                    @if (Model.LoggedIn)
+                    {
+                        <th>Löschen</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < Model.Rankings.Count(); i++)
+                {
+                    var categoryList = Model.Rankings[i].PlayedCategories.Aggregate(string.Empty, (current, category) => current + $"{category.Category}, ");
+                    <tr>
+                        <td>@Html.Label($"{i + 1}")</td>
+                        <td>@Html.Label($"{Model.Rankings[i].EvaluationPoints}")</td>
+                        <td>@Html.Label($"{Model.Rankings[i].PlayerName}")</td>
+                        <td>@Html.Label($"{Model.Rankings[i].GameBegin}")</td>
+                        <td>@Html.Label($"{Model.Rankings[i].Score}")</td>
+                        <td>@Html.Label($"{Model.Rankings[i].TimeOfGame}")</td>
+                        <td>@Html.Label(categoryList)</td>
+                        @if (Model.LoggedIn)
+                        {
+                            <td>@Html.CheckBoxFor(m => m.Rankings[i].Delete, new {@class = "form-control"})</td>
+                        }
+                    </tr>
+
+                    @Html.HiddenFor(a => a.Rankings[i].GameId)
+                }
+            </tbody>
+        </table>
+        <input class="btn-primary" type="submit" value="Markierte löschen" />
+    </div>
+
+
+}
 
