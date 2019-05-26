@@ -19,7 +19,7 @@ namespace WebserviceMain.Database
 
 		public IEnumerable<Question> GetAllQuestions()
 		{
-			return _dataContext.Question.ToList();
+			return _dataContext.Question;
 		}
 
 		public IEnumerable<Question> GetQuestionsByCategories(IEnumerable<int> categoryIds)
@@ -40,7 +40,7 @@ namespace WebserviceMain.Database
 
 		public IEnumerable<Category> GetCategories()
 		{
-			return _dataContext.Category.ToList();
+			return _dataContext.Category;
 		}
 
 		public IEnumerable<RankingModel> GetRanking()
@@ -200,6 +200,11 @@ namespace WebserviceMain.Database
 		public Question GetQuestionById(int questionId)
 		{
 			return _dataContext.Question.Single(a => a.intQuestionId == questionId);
+		}
+
+		public IEnumerable<Answer> GetAllAnswers()
+		{
+			return _dataContext.Answer;
 		}
 	}
 }

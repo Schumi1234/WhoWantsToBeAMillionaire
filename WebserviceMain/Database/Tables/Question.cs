@@ -18,12 +18,10 @@ namespace WebserviceMain.Database.Tables
 		[Display(Name = "Question")]
 		public string strName { get; set; }
 
-		[Required]
 		[Column(TypeName = "int")]
 		[Display(Name = "intAnsweredCorrectly")]
 		public int intAnsweredCorrectly { get; set; }
 
-		[Required]
 		[Column(TypeName = "int")]
 		[Display(Name = "intAnsweredWrong")]
 		public int intAnsweredWrong { get; set; }

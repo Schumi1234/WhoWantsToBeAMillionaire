@@ -1,7 +1,74 @@
-﻿
+﻿@model WebMain.Models.Edit.EditQuestionAndAnswersViewModel
 @{
-    ViewData["Title"] = "EditQuestions";
+    ViewData["Title"] = "Fragen und Antworten bearbeiten";
 }
 
-<h2>EditQuestions</h2>
+<h2>Fragen und Antworten bearbeiten</h2>
+@using (Html.BeginForm("QuestionDetail", "Edit", FormMethod.Post, new { @class = "form-horizontal", role = "form", viewModel = Model.Categories }))
+{
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Kategorie</th>
+                    <th>Bezeichnung</th>
+                    <th>Antwort 1</th>
+                    <th>Antwort 2</th>
+                    <th>Antwort 3</th>
+                    <th>Antwort 4</th>
+                    <th>Bearbeiten</th>
+                    <th>Löschen</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < Model.QuestionsAndAnswers.Count(); i++)
+                {
+                    var categoryId = Model.QuestionsAndAnswers[i].SelectedCategoryId;
+                    var stringCategory = Model.Categories.Single(a => a.CategoryId == categoryId).Category;
+                    <tr>
+                        <td>@Html.Label(stringCategory)</td>
+                        <td>@Html.Label(Model.QuestionsAndAnswers[i].Name)</td>
+                        @for (var x = 0; x < Model.QuestionsAndAnswers[i].Answers.Count(); x++)
+                        {
+                            if (Model.QuestionsAndAnswers[i].Answers[x].Correct)
+                            {
+                                <td style="background: lightgreen;">@Html.Label(Model.QuestionsAndAnswers[i].Answers[x].Answer)</td>
+                            }
+                            else
+                            {
+                                <td>@Html.Label(Model.QuestionsAndAnswers[i].Answers[x].Answer)</td>
+                            }
+                        }
 
+                        <td>@Html.ActionLink("Bearbeiten", "QuestionDetail", "Edit", new { questionId = Model.QuestionsAndAnswers[i].Id }, new { })</td>
+
+                        <td>@Html.CheckBoxFor(m => m.QuestionsAndAnswers[i].Delete, new { @class = "form-control" })</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    var answerId = new List<int>();
+    foreach (var questionAndAnswers in Model.QuestionsAndAnswers.Where(a => a.Delete))
+    {
+        answerId.AddRange(questionAndAnswers.Answers.Select(a => a.AnswerId));
+    }
+
+    <input class="btn-default" type="submit" value="Neue Frage hinzufügen" />
+    
+    <!--Save values in models, otherwise data will be lost-->
+    for (var i = 0; i < Model.Categories.Count; i++)
+    {
+        @Html.HiddenFor(m => m.Categories[i].CategoryId)
+        @Html.HiddenFor(m => m.Categories[i].Category)
+    }
+
+    for (var i = 0; i < Model.Categories.Count; i++)
+    {
+        @Html.HiddenFor(m => m.QuestionsAndAnswers[i].Id)
+        for (var x = 0; x < Model.QuestionsAndAnswers[i].Answers.Count; x++)
+        {
+            @Html.HiddenFor(m => m.QuestionsAndAnswers[i].Answers[x].AnswerId)
+        }
+    }
+}

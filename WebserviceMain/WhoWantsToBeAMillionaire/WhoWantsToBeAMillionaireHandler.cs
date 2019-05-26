@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using SharedModels;
 using WebserviceMain.Database;
@@ -62,7 +61,8 @@ namespace WebserviceMain.WhoWantsToBeAMillionaire
 			return _databaseController.GetAnswers(questionId).Select(a => new AnswerModel
 			{
 				Answer = a.strName,
-				AnswerId = a.intAnswerID
+				AnswerId = a.intAnswerID,
+				Correct = a.blnCorrect
 			});
 		}
 

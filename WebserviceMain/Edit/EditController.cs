@@ -18,7 +18,7 @@ namespace WebserviceMain.Edit
 			_editHandler = editHandler;
 		}
 
-		[Route("allCategories")]
+		[Route("AllCategories")]
 		[HttpGet]
 		public IEnumerable<CategoryModel> GetAllCategories()
 		{
@@ -30,6 +30,48 @@ namespace WebserviceMain.Edit
 		public bool SaveEditedCategories(SaveCategoriesRequestModel requestModel)
 		{
 			return _editHandler.SaveEditedCategories(requestModel);
+		}
+
+		[Route("AllQuestions")]
+		[HttpGet]
+		public IEnumerable<QuestionModel> GetAllQuestions()
+		{
+			return _editHandler.GetAllQuestions();
+		}
+
+		[Route("AllAnswers")]
+		[HttpGet]
+		public IEnumerable<AnswerModel> GetAllAnswers()
+		{
+			return _editHandler.GetAllAnswers();
+		}
+
+		[Route("QuestionById")]
+		[HttpPost]
+		public QuestionModel GetQuestionById([FromBody] int questionId)
+		{
+			return _editHandler.GetQuestionById(questionId);
+		}
+
+		[Route("AnswersOfQuestion")]
+		[HttpPost]
+		public IEnumerable<AnswerModel> GetAnswers([FromBody] int questionId)
+		{
+			return _editHandler.GetAnswers(questionId);
+		}
+
+		[Route("SaveQuestionWithAnswer")]
+		[HttpPost]
+		public bool SaveQuestionAndAnswers(SaveQuestionAndAnswersRequestModel requestModel)
+		{
+			return _editHandler.SaveQuestionAndAnswers(requestModel);
+		}
+
+		[Route("DeleteQuestionWithAnswer")]
+		[HttpPost]
+		public bool DeleteQuestionAndAnswers(DeleteQuestionAndAnswersRequestModel requestModel)
+		{
+			return _editHandler.DeleteQuestionAndAnswers(requestModel);
 		}
 	}
 }

@@ -1,0 +1,46 @@
+﻿@model WebMain.Models.Edit.EditQuestionAndAnswerViewModel
+@{
+    ViewData["Title"] = "Frage hinzufügen";
+}
+
+<h2>Frage hinzufügen</h2>
+@using (Html.BeginForm("SaveQuestion", "Edit", FormMethod.Post, new { @class = "form-horizontal", role = "form", viewModel = Model }))
+{
+    <div class="form-group">
+        <div>
+            @Html.Label("Kategorie")
+        </div>
+        <div>
+            @Html.DropDownListFor(m => m.SelectedCategoryId, new SelectList(Model.Categories, "CategoryId",  "Category"))
+            <br />
+        </div>
+        <div>
+            @Html.Label("Frage")
+        </div>
+        <div>
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+            <br />
+        </div>
+        <fieldset>
+            @for (var i = 0; i < 4; i++)
+            {
+                <div>
+                    @Html.Label("Korrekt") 
+                    @Html.RadioButtonFor(m => m.CorrectAnswerIndex, i)
+                </div>
+                <div>
+                    @Html.Label($"Antwort {i + 1}")
+                </div>
+                <div>
+                    @Html.TextBoxFor(m => m.Answers[i].Answer, new { @class = "form-control" })
+                </div>
+
+                @Html.HiddenFor(m => m.Id)
+                @Html.HiddenFor(m => m.Answers[i].AnswerId)
+                @Html.HiddenFor(m => m.Answers[i].QuestionId)
+            }
+        </fieldset>
+        <input type="submit" value="Speichern" class="btn-default" />
+    </div>
+}
+

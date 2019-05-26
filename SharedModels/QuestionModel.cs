@@ -8,5 +8,6 @@
 
 		public int NumberAnsweredCorrectly { get; set; }
 		public double AnsweredCorrectlyPercentage { get; set; }
+		public int CategoryId { get; set; }
 	}
 }

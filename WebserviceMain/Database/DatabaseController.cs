@@ -66,5 +66,10 @@ namespace WebserviceMain.Database
 		{
 			return _databaseHandler.GetAllQuestions();
 		}
+
+		public IEnumerable<Answer> GetAllAnswers()
+		{
+			return _databaseHandler.GetAllAnswers();
+		}
 	}
 }
