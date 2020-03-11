@@ -29,7 +29,7 @@ namespace WebMain.DataServiceProvider
 			var stringContent = new StringContent(content, Encoding.UTF8, "application/json");
 			var client = new HttpClient();
 			var response = client.PostAsync(new Uri(url), stringContent).Result;
-			if (!response.IsSuccessStatusCode) return default(T);
+			if (!response.IsSuccessStatusCode) return default;
 			var responseString = response.Content.ReadAsStringAsync().Result;
 			return JsonConvert.DeserializeObject<T>(responseString);
 		}

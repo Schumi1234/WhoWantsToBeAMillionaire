@@ -8,20 +8,18 @@
     <h2>Suchen sie aus mit welchen Kategorien sie spielen wollen.</h2>
     if (!string.IsNullOrEmpty(Model.ErrorMessage))
     {
-         <div class="fade">
-             <p style="color: red; font-size: x-large">@Model.ErrorMessage</p>
-         </div>
+        <p style="color: red; font-size: x-large">@Model.ErrorMessage</p>
     }
 
     for (var i = 0; i < Model.AllCategories.Count(); i++)
     {
-            @Html.CheckBoxFor(m => m.AllCategories[i].Chosen, Model.AllCategories[i].CategoryName)
-            @Html.Label(Model.AllCategories[i].CategoryName)
-            @Html.HiddenFor(a => a.AllCategories[i].CategoryId)
-            @Html.HiddenFor(a => a.AllCategories[i].Chosen)
-            @Html.HiddenFor(a => a.AllCategories[i].CategoryName)
-            <br />
-        }
+        @Html.CheckBoxFor(m => m.AllCategories[i].Chosen, Model.AllCategories[i].CategoryName)
+        <label> @Model.AllCategories[i].CategoryName</label>
+        @Html.HiddenFor(a => a.AllCategories[i].CategoryId)
+        @Html.HiddenFor(a => a.AllCategories[i].Chosen)
+        @Html.HiddenFor(a => a.AllCategories[i].CategoryName)
+        <br />
+    }
 
     <input type="submit" class="btn btn-primary" value="Auswahl bestätigen" />
 }

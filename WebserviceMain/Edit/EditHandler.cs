@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using SharedModels;
 using WebserviceMain.Database;
@@ -184,5 +185,27 @@ namespace WebserviceMain.Edit
 			_databaseController.Delete(games);
 			return true;
 		}
+
+		public void Test()
+		{
+			IEnumerable<int> strengths = new List<int>();
+
+			
+			var difference = int.MaxValue;
+			//strengths.
+			foreach (var x in strengths)
+			{
+				foreach (var y in strengths)
+				{
+					var diff = x - y;
+					if (diff > 0 && diff < difference)
+					{
+						difference = diff;
+					}
+				}
+
+			}
+		}
+
 	}
 }
